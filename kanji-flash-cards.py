@@ -5,14 +5,30 @@ from PyQt5.uic import loadUi
 
 class Kanji():
     value = ''
+    onyomi = ''
+    kunyomi = ''
+
     next = None
     prev = None
 
-    def __init__(self, val):
+    def __init__(self, val, onyomi, kunyomi):
         self.value = val
+        self.onyomi = onyomi
+        self.kunyomi = kunyomi
 
 class KanjiFlashCards(QtWidgets.QMainWindow):
-    testKanji = ['一','二','三','四','五','六','七','八','九','十']
+    testKanji = {
+        '一': 'ichi'
+        ,'二': 'ni'
+        ,'三': 'san'
+        ,'四': 'shi'
+        ,'五': 'go'
+        ,'六': 'roku'
+        ,'七': 'nana'
+        ,'八': 'hachi'
+        ,'九': 'kyuu'
+        ,'十': 'jyuu'
+    }
     kanjiPtr = None
     
     def __init__(self):
@@ -20,14 +36,15 @@ class KanjiFlashCards(QtWidgets.QMainWindow):
         loadUi('kanji-flash-cards.ui', self)
 
         #shuffle kanji array and create linked list for prev/next traversal
-        random.shuffle(self.testKanji)
+        randomKeys = list(self.testKanji.keys())
+        random.shuffle(randomKeys)
         nextKanji = None
-        prevKanji = Kanji(self.testKanji[0])
-        self.testKanji.pop(0)
+        prevKanji = Kanji(randomKeys[0], '', self.testKanji[randomKeys[0]])
+        randomKeys.pop(0)
         self.kanjiPtr = prevKanji
         
-        for kanji in self.testKanji:
-            nextKanji = Kanji(kanji)
+        for kanji in randomKeys:
+            nextKanji = Kanji(kanji, '', self.testKanji[kanji])
             nextKanji.prev = prevKanji
             prevKanji.next = nextKanji
             prevKanji = nextKanji
@@ -35,21 +52,19 @@ class KanjiFlashCards(QtWidgets.QMainWindow):
         # bind events
         self.btnNext.clicked.connect(self.onBtnNextClicked)
         self.btnPrev.clicked.connect(self.onBtnPrevClicked)
-        
-        # show first Kanji
-        self.onBtnNextClicked()
-        self.onBtnPrevClicked()
 
         self.show()
 
     def onBtnNextClicked(self):
+        self.lblKanji.setText(self.kanjiPtr.value)
+        
         if(self.kanjiPtr.next is not None):
-            self.lblKanji.setText(self.kanjiPtr.value)
             self.kanjiPtr = self.kanjiPtr.next
 
     def onBtnPrevClicked(self):
+        self.lblKanji.setText(self.kanjiPtr.value)
+
         if(self.kanjiPtr.prev is not None):
-            self.lblKanji.setText(self.kanjiPtr.value)
             self.kanjiPtr = self.kanjiPtr.prev
 
 def run():
