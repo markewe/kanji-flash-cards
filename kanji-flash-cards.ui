@@ -66,6 +66,32 @@
      <string>Kanji Image</string>
     </property>
    </widget>
+   <widget class="QLabel" name="lblOnyomi">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>250</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Onyomi</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblKunyomi">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>250</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Kunyomi</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
